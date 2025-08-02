@@ -71,7 +71,7 @@
     --shadow-strong: 0 8px 32px hsl(120 15% 20% / 0.16);
     
     /* Video Card Specific */
-    --video-aspect: 1.6; /* 16:10 cinematic ratio */
+    --video-aspect: 1.777; /* 16:9 YouTube ratio */
     --video-hover-lift: -4px;
   }
   
