@@ -37,11 +37,11 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
 
   return (
     <article 
-      className={`video-card group cursor-pointer animate-scale-in ${watched ? 'opacity-75' : ''}`}
+      className={`video-card group cursor-pointer animate-scale-in h-full flex flex-col ${watched ? 'opacity-75' : ''}`}
       onClick={onClick}
     >
       {/* Thumbnail */}
-      <div className="video-card-image">
+      <div className="video-card-image flex-shrink-0">
         <img
           src={story.thumbnailUrl}
           alt={story.title}
@@ -77,42 +77,48 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-3">
-        <h3 className="text-card-title group-hover:text-primary transition-colors duration-200">
+      <div className="p-6 space-y-3 flex-1 flex flex-col">
+        <h3 className="text-card-title group-hover:text-primary transition-colors duration-200 flex-shrink-0">
           {story.title}
         </h3>
         
-        {story.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-            {story.description}
-          </p>
-        )}
-        
-        <div className="flex items-center justify-between text-card-meta">
-          <span>{formatDate(story.uploadDate)}</span>
-          {story.views && (
-            <span>{story.views.toLocaleString()} views</span>
-          )}
-        </div>
-        
-        {/* Tags */}
-        {story.tags && story.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {story.tags.slice(0, 3).map((tag, index) => (
-              <span 
-                key={index}
-                className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-            {story.tags.length > 3 && (
-              <span className="text-xs text-muted-foreground">
-                +{story.tags.length - 3} more
-              </span>
+        <div className="flex-1 flex flex-col justify-between space-y-3">
+          <div className="space-y-3">
+            {story.description && (
+              <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                {story.description}
+              </p>
             )}
+            
+            <div className="flex items-center justify-between text-card-meta">
+              <span>{formatDate(story.uploadDate)}</span>
+              {story.views && (
+                <span>{story.views.toLocaleString()} views</span>
+              )}
+            </div>
           </div>
-        )}
+          
+          {/* Tags - Always reserve space */}
+          <div className="min-h-[32px] flex items-end">
+            {story.tags && story.tags.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {story.tags.slice(0, 3).map((tag, index) => (
+                  <span 
+                    key={index}
+                    className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {story.tags.length > 3 && (
+                  <span className="text-xs text-muted-foreground">
+                    +{story.tags.length - 3} more
+                  </span>
+                )}
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
     </article>
   );
