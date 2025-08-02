@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Search, Shuffle } from 'lucide-react';
+import { Search, Shuffle, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/hooks/useAuth';
+import AuthModal from './AuthModal';
 
 interface HeaderProps {
   searchQuery: string;
@@ -10,8 +14,11 @@ interface HeaderProps {
 
 const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, signOut, loading } = useAuth();
 
   return (
+    <>
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container-responsive py-4">
         <div className="flex items-center justify-between">
@@ -40,19 +47,64 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => 
             </div>
           </div>
 
-          {/* Random Button */}
-          <Button
-            onClick={onRandomStory}
-            variant="outline"
-            size="sm"
-            className="flex items-center space-x-2 hover:bg-secondary"
-          >
-            <Shuffle className="h-4 w-4" />
-            <span className="hidden sm:inline">Surprise Me</span>
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-2">
+            <Button
+              onClick={onRandomStory}
+              variant="outline"
+              size="sm"
+              className="flex items-center space-x-2 hover:bg-secondary"
+            >
+              <Shuffle className="h-4 w-4" />
+              <span className="hidden sm:inline">Surprise Me</span>
+            </Button>
+
+            {!loading && (
+              <>
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>
+                            {user.email?.charAt(0).toUpperCase() || 'A'}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem disabled>
+                        <User className="mr-2 h-4 w-4" />
+                        {user.email}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => signOut()}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button
+                    onClick={() => setShowAuthModal(true)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Sign In
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
+
+    <AuthModal 
+      isOpen={showAuthModal} 
+      onClose={() => setShowAuthModal(false)} 
+    />
+  </>
   );
 };
 

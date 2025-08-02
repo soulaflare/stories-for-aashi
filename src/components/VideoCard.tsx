@@ -1,5 +1,6 @@
-import { Play, Clock } from 'lucide-react';
+import { Play, Clock, Check } from 'lucide-react';
 import { Story } from '@/types/story';
+import { useWatchHistory } from '@/hooks/useWatchHistory';
 
 interface VideoCardProps {
   story: Story;
@@ -7,6 +8,9 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ story, onClick }: VideoCardProps) => {
+  const { isWatched } = useWatchHistory();
+  const watched = isWatched(story.videoUrl);
+
   const formatDuration = (duration: string) => {
     // Convert YouTube duration format (PT1M30S) to readable format
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -33,7 +37,7 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
 
   return (
     <article 
-      className="video-card group cursor-pointer animate-scale-in"
+      className={`video-card group cursor-pointer animate-scale-in ${watched ? 'opacity-75' : ''}`}
       onClick={onClick}
     >
       {/* Thumbnail */}
@@ -60,6 +64,14 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
           <div className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs px-2 py-1 rounded flex items-center space-x-1">
             <Clock className="h-3 w-3" />
             <span>{formatDuration(story.duration)}</span>
+          </div>
+        )}
+
+        {/* Watched Badge */}
+        {watched && (
+          <div className="absolute top-3 right-3 bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs px-2 py-1 rounded flex items-center space-x-1">
+            <Check className="h-3 w-3" />
+            <span>Watched</span>
           </div>
         )}
       </div>

@@ -2,6 +2,8 @@ import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Story } from '@/types/story';
+import { useWatchHistory } from '@/hooks/useWatchHistory';
+import { useEffect } from 'react';
 
 interface VideoModalProps {
   story: Story | null;
@@ -22,6 +24,20 @@ const VideoModal = ({
   hasPrevious, 
   hasNext 
 }: VideoModalProps) => {
+  const { markAsWatched } = useWatchHistory();
+
+  // Mark video as watched when modal opens and video starts playing
+  useEffect(() => {
+    if (story && isOpen) {
+      // Small delay to ensure the video starts playing
+      const timer = setTimeout(() => {
+        markAsWatched(story.videoUrl, story.title);
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [story, isOpen, markAsWatched]);
+
   if (!story) return null;
 
   const getYouTubeEmbedUrl = (videoUrl: string) => {
