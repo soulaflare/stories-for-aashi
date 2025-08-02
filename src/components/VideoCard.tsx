@@ -1,6 +1,8 @@
-import { Play, Clock, Check } from 'lucide-react';
+import { Play, Clock, Check, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Story } from '@/types/story';
 import { useWatchHistory } from '@/hooks/useWatchHistory';
+import { Button } from '@/components/ui/button';
 
 interface VideoCardProps {
   story: Story;
@@ -98,7 +100,7 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
             </div>
           </div>
           
-          {/* Tags - Always reserve space */}
+          {/* Tags */}
           <div className="min-h-[32px] flex items-end">
             {story.tags && story.tags.length > 0 ? (
               <div className="flex flex-wrap gap-2">
@@ -117,6 +119,35 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
                 )}
               </div>
             ) : null}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
+              className="flex-1"
+            >
+              <Play className="h-3 w-3 mr-1" />
+              Watch
+            </Button>
+            {story.slug && (
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Link to={`/story/${story.slug}`}>
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  View
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

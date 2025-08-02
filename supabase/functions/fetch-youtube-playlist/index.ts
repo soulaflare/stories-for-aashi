@@ -5,6 +5,16 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// Function to generate URL-friendly slugs
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+}
+
 interface YouTubePlaylistResponse {
   items: YouTubeVideoItem[];
   nextPageToken?: string;
@@ -93,6 +103,11 @@ Deno.serve(async (req) => {
 
     console.log(`Found ${playlistData.items.length} videos in playlist`);
 
+    // Initialize Supabase client with service role for database operations
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
     // Fetch video details for duration
     const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId);
     const videosResponse = await fetch(
@@ -106,8 +121,8 @@ Deno.serve(async (req) => {
       console.warn('Failed to fetch video details, continuing without duration info');
     }
     
-    // Transform YouTube data to our Story format
-    const stories = playlistData.items.map((item) => {
+    // Transform YouTube data to our Story format with slugs
+    const transformedStories = playlistData.items.map((item) => {
       const videoDetails = videosData.items?.find((video: any) => 
         video.id === item.snippet.resourceId.videoId
       );
@@ -116,24 +131,155 @@ Deno.serve(async (req) => {
       const hashtags = item.snippet.description?.match(/#[\w]+/g) || [];
       const tags = hashtags.map(tag => tag.replace('#', '')).slice(0, 5);
 
+      const title = item.snippet.title;
+      const slug = generateSlug(title);
+
       return {
-        id: item.snippet.resourceId.videoId,
-        title: item.snippet.title,
+        video_id: item.snippet.resourceId.videoId,
+        title: title,
         description: item.snippet.description || '',
-        thumbnailUrl: item.snippet.thumbnails?.maxres?.url || 
-                     item.snippet.thumbnails?.high?.url || 
-                     item.snippet.thumbnails?.medium?.url ||
-                     item.snippet.thumbnails?.default?.url ||
-                     'https://img.youtube.com/vi/' + item.snippet.resourceId.videoId + '/maxresdefault.jpg',
-        videoUrl: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`,
+        thumbnail_url: item.snippet.thumbnails?.maxres?.url || 
+                      item.snippet.thumbnails?.high?.url || 
+                      item.snippet.thumbnails?.medium?.url ||
+                      'https://img.youtube.com/vi/' + item.snippet.resourceId.videoId + '/maxresdefault.jpg',
+        video_url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`,
         duration: videoDetails?.contentDetails?.duration || '',
-        uploadDate: item.snippet.publishedAt,
+        upload_date: item.snippet.publishedAt,
         tags: tags,
-        views: Math.floor(Math.random() * 5000) + 100 // Placeholder as view count requires additional API call
+        views: Math.floor(Math.random() * 5000) + 100,
+        slug: slug,
+        is_active: true
       };
     });
 
-    console.log(`Successfully transformed ${stories.length} stories`);
+    console.log(`Successfully transformed ${transformedStories.length} stories`);
+
+    // Sync with database
+    console.log('Starting database sync...');
+    
+    // Get existing stories from database
+    const { data: existingStories, error: fetchError } = await supabase
+      .from('stories')
+      .select('video_id, slug');
+    
+    if (fetchError) {
+      console.error('Error fetching existing stories:', fetchError);
+    }
+
+    const existingVideoIds = new Set(existingStories?.map(s => s.video_id) || []);
+    const currentVideoIds = new Set(transformedStories.map(s => s.video_id));
+
+    // Mark removed videos as inactive
+    const removedVideoIds = [...existingVideoIds].filter(id => !currentVideoIds.has(id));
+    if (removedVideoIds.length > 0) {
+      console.log(`Marking ${removedVideoIds.length} removed videos as inactive`);
+      const { error: deactivateError } = await supabase
+        .from('stories')
+        .update({ is_active: false })
+        .in('video_id', removedVideoIds);
+      
+      if (deactivateError) {
+        console.error('Error deactivating removed videos:', deactivateError);
+      }
+    }
+
+    // Insert new stories or update existing ones
+    const newStories = transformedStories.filter(story => !existingVideoIds.has(story.video_id));
+    
+    if (newStories.length > 0) {
+      console.log(`Inserting ${newStories.length} new stories`);
+      
+      // Handle slug conflicts by appending video_id if needed
+      for (const story of newStories) {
+        const { data: existingSlug } = await supabase
+          .from('stories')
+          .select('id')
+          .eq('slug', story.slug)
+          .single();
+        
+        if (existingSlug) {
+          story.slug = `${story.slug}-${story.video_id}`;
+        }
+      }
+      
+      const { error: insertError } = await supabase
+        .from('stories')
+        .insert(newStories);
+      
+      if (insertError) {
+        console.error('Error inserting new stories:', insertError);
+      } else {
+        console.log('Successfully inserted new stories');
+      }
+    }
+
+    // Update existing stories to ensure they're active
+    const existingToUpdate = transformedStories.filter(story => existingVideoIds.has(story.video_id));
+    if (existingToUpdate.length > 0) {
+      console.log(`Updating ${existingToUpdate.length} existing stories`);
+      
+      for (const story of existingToUpdate) {
+        const { error: updateError } = await supabase
+          .from('stories')
+          .update({ 
+            title: story.title,
+            description: story.description,
+            thumbnail_url: story.thumbnail_url,
+            duration: story.duration,
+            tags: story.tags,
+            is_active: true
+          })
+          .eq('video_id', story.video_id);
+        
+        if (updateError) {
+          console.error(`Error updating story ${story.video_id}:`, updateError);
+        }
+      }
+    }
+
+    // Fetch all active stories from database for response
+    const { data: allStories, error: allStoriesError } = await supabase
+      .from('stories')
+      .select('*')
+      .eq('is_active', true)
+      .order('upload_date', { ascending: false });
+
+    if (allStoriesError) {
+      console.error('Error fetching all stories:', allStoriesError);
+      // Fallback to transformed stories
+      const legacyStories = transformedStories.map(story => ({
+        id: story.video_id,
+        title: story.title,
+        description: story.description,
+        thumbnailUrl: story.thumbnail_url,
+        videoUrl: story.video_url,
+        duration: story.duration,
+        uploadDate: story.upload_date,
+        tags: story.tags,
+        views: story.views
+      }));
+      
+      return new Response(
+        JSON.stringify({ stories: legacyStories }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Transform database stories to legacy format for backward compatibility
+    const stories = allStories.map(story => ({
+      id: story.video_id,
+      title: story.title,
+      description: story.description,
+      thumbnailUrl: story.thumbnail_url,
+      videoUrl: story.video_url,
+      duration: story.duration,
+      uploadDate: story.upload_date,
+      tags: story.tags,
+      views: story.views,
+      slug: story.slug
+    }));
+
+    console.log(`Returning ${stories.length} synchronized stories`);
 
     return new Response(
       JSON.stringify({ stories }),

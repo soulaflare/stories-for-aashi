@@ -8,6 +8,7 @@ export interface Story {
   uploadDate: string;
   tags: string[];
   views?: number;
+  slug?: string;
 }
 
 export interface YouTubePlaylistResponse {

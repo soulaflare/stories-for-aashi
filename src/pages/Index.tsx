@@ -4,10 +4,11 @@ import HeroSection from '@/components/HeroSection';
 import VideoGrid from '@/components/VideoGrid';
 import VideoModal from '@/components/VideoModal';
 import Footer from '@/components/Footer';
-import { useYouTubePlaylist } from '@/hooks/useYouTubePlaylist';
+import { useStories } from '@/hooks/useStories';
 import { useSearch } from '@/hooks/useSearch';
 import { Story } from '@/types/story';
 import { toast } from '@/hooks/use-toast';
+import SEOMetaTags from '@/components/SEOMetaTags';
 
 const Index = () => {
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
@@ -15,10 +16,18 @@ const Index = () => {
   
   const { 
     stories, 
-    featuredStory, 
-    loading, 
-    getRandomStory 
-  } = useYouTubePlaylist();
+    loading
+  } = useStories();
+
+  // Get featured story (most recent one)
+  const featuredStory = stories.length > 0 ? stories[0] : null;
+
+  // Function to get a random story
+  const getRandomStory = async () => {
+    if (stories.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * stories.length);
+    return stories[randomIndex];
+  };
   
   const { 
     searchQuery, 
@@ -101,6 +110,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOMetaTags isHomepage={true} />
       <Header
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
