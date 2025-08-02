@@ -25,7 +25,7 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => 
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <img src={bookIcon} alt="Book icon" className="h-7 w-7" />
+            <img src={bookIcon} alt="Book icon" className="h-10 w-10" />
             <h1 className="text-2xl font-display font-medium text-foreground">
               Stories for Aashi
             </h1>
