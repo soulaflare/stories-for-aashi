@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          email_notifications: boolean | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      story_notifications: {
+        Row: {
+          id: string
+          recipient_count: number | null
+          sent_at: string
+          video_id: string
+          video_title: string | null
+        }
+        Insert: {
+          id?: string
+          recipient_count?: number | null
+          sent_at?: string
+          video_id: string
+          video_title?: string | null
+        }
+        Update: {
+          id?: string
+          recipient_count?: number | null
+          sent_at?: string
+          video_id?: string
+          video_title?: string | null
+        }
+        Relationships: []
+      }
+      watched_videos: {
+        Row: {
+          id: string
+          user_id: string
+          video_id: string
+          video_title: string | null
+          watched_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          video_id: string
+          video_title?: string | null
+          watched_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          video_id?: string
+          video_title?: string | null
+          watched_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
