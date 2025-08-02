@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="flex items-center justify-center space-x-2 text-foreground">
             <span className="text-lg font-body">Made with</span>
             <Heart className="h-5 w-5 text-accent fill-current" />
-            <span className="text-lg font-body">for Ayushi</span>
+            <span className="text-lg font-body">for Aashi</span>
           </div>
           
           {/* Copyright */}
