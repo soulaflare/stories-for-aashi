@@ -85,15 +85,6 @@ const VideoModal = ({
             )}
           </div>
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.open(story.videoUrl, '_blank')}
-            className="hover:bg-secondary"
-          >
-            <ExternalLink className="h-4 w-4 mr-1" />
-            Watch on YouTube
-          </Button>
         </div>
 
         {/* Video Player */}
