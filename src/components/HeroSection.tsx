@@ -43,16 +43,6 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
               </Button>
             </div>
             
-            <div className="flex items-center space-x-6 text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                <span className="text-sm">Handpicked Stories</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span className="text-sm">Always Updated</span>
-              </div>
-            </div>
           </div>
 
           {/* Right: Featured Content */}
