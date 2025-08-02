@@ -58,6 +58,11 @@ Deno.serve(async (req) => {
     }
 
     console.log('Fetching YouTube playlist:', PLAYLIST_ID);
+    console.log('Using API key (first 10 chars):', YOUTUBE_API_KEY?.substring(0, 10));
+    
+    // Let's also try a test API call to verify the key works
+    const testResponse = await fetch(`${API_BASE_URL}/search?part=snippet&q=test&key=${YOUTUBE_API_KEY}&maxResults=1`);
+    console.log('Test API call status:', testResponse.status);
 
     // Fetch playlist items
     const playlistResponse = await fetch(
