@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from './AuthModal';
+import bookIcon from '/book-icon.png';
 
 interface HeaderProps {
   searchQuery: string;
@@ -24,6 +25,7 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => 
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
+            <img src={bookIcon} alt="Book icon" className="h-8 w-8" />
             <h1 className="text-2xl font-display font-medium text-foreground">
               Stories for Aashi
             </h1>
