@@ -3,13 +3,14 @@ import { Button } from '@/components/ui/button';
 
 interface HeroSectionProps {
   onStartWatching: () => void;
+  onBrowseCollection: () => void;
   featuredStory?: {
     title: string;
     thumbnailUrl: string;
   };
 }
 
-const HeroSection = ({ onStartWatching, featuredStory }: HeroSectionProps) => {
+const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: HeroSectionProps) => {
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-secondary/20">
       <div className="container-responsive">
@@ -32,7 +33,12 @@ const HeroSection = ({ onStartWatching, featuredStory }: HeroSectionProps) => {
                 <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                 Start Watching
               </Button>
-              <Button variant="outline" size="lg" className="hover:bg-secondary">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="hover:bg-secondary"
+                onClick={onBrowseCollection}
+              >
                 Browse Collection
               </Button>
             </div>

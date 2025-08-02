@@ -61,6 +61,16 @@ const Index = () => {
     }
   };
 
+  const handleBrowseCollection = () => {
+    const videoGridElement = document.getElementById('video-collection');
+    if (videoGridElement) {
+      videoGridElement.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedStory(null);
@@ -100,14 +110,17 @@ const Index = () => {
       <main>
         <HeroSection
           onStartWatching={handleStartWatching}
+          onBrowseCollection={handleBrowseCollection}
           featuredStory={featuredStory}
         />
         
-        <VideoGrid
-          stories={filteredStories}
-          loading={loading}
-          onVideoClick={handleVideoClick}
-        />
+        <div id="video-collection">
+          <VideoGrid
+            stories={filteredStories}
+            loading={loading}
+            onVideoClick={handleVideoClick}
+          />
+        </div>
       </main>
       
       <Footer />
