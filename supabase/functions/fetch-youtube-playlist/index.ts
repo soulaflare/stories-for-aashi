@@ -120,9 +120,11 @@ Deno.serve(async (req) => {
         id: item.snippet.resourceId.videoId,
         title: item.snippet.title,
         description: item.snippet.description || '',
-        thumbnailUrl: item.snippet.thumbnails.maxres?.url || 
-                     item.snippet.thumbnails.high?.url || 
-                     item.snippet.thumbnails.medium.url,
+        thumbnailUrl: item.snippet.thumbnails?.maxres?.url || 
+                     item.snippet.thumbnails?.high?.url || 
+                     item.snippet.thumbnails?.medium?.url ||
+                     item.snippet.thumbnails?.default?.url ||
+                     'https://img.youtube.com/vi/' + item.snippet.resourceId.videoId + '/maxresdefault.jpg',
         videoUrl: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`,
         duration: videoDetails?.contentDetails?.duration || '',
         uploadDate: item.snippet.publishedAt,
