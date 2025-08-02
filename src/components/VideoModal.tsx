@@ -56,7 +56,8 @@ const VideoModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-full p-0 bg-background border-border">
+      <DialogContent className="max-w-6xl w-full h-auto max-h-[90vh] p-0 bg-background border-border overflow-y-auto">
+        <div className="min-h-0">{/* Wrapper to ensure proper flex behavior */}
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center space-x-4">
@@ -153,6 +154,7 @@ const VideoModal = ({
             </div>
           )}
         </div>
+        </div>{/* Close wrapper */}
       </DialogContent>
     </Dialog>
   );
