@@ -43,7 +43,7 @@ interface YouTubeVideoItem {
   };
 }
 
-const PLAYLIST_ID = 'PLNlKU9V2hLNjQxx0uxG6wmKtXeFqRz33Y';
+const PLAYLIST_ID = 'PLNlKU9V2hLNiqfqr3cuL5sIxBk33WUitL';
 const API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 Deno.serve(async (req) => {
