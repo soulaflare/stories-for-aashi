@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Shuffle, User, LogOut } from 'lucide-react';
+import { Search, Shuffle, User, LogOut, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
@@ -11,9 +11,10 @@ interface HeaderProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onRandomStory: () => void;
+  onSync?: () => void;
 }
 
-const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => {
+const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderProps) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user, signOut, loading } = useAuth();
@@ -51,6 +52,18 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory }: HeaderProps) => 
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-2">
+            {onSync && (
+              <Button
+                onClick={onSync}
+                variant="outline"
+                size="sm"
+                className="flex items-center space-x-2 hover:bg-secondary"
+              >
+                <RefreshCw className="h-4 w-4" />
+                <span className="hidden sm:inline">Sync</span>
+              </Button>
+            )}
+            
             <Button
               onClick={onRandomStory}
               variant="outline"

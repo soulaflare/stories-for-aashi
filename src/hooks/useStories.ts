@@ -7,6 +7,7 @@ interface StoriesHookResult {
   loading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
+  forceSync: () => Promise<void>;
 }
 
 export function useStories(): StoriesHookResult {
@@ -89,11 +90,17 @@ export function useStories(): StoriesHookResult {
     await fetchStories();
   };
 
+  const forceSync = async () => {
+    setLoading(true);
+    await syncWithYouTube();
+    setLoading(false);
+  };
+
   useEffect(() => {
     fetchStories();
   }, []);
 
-  return { stories, loading, error, refetch };
+  return { stories, loading, error, refetch, forceSync };
 }
 
 export function useStoryBySlug(slug: string): { story: Story | null; loading: boolean; error: string | null } {

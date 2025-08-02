@@ -16,7 +16,8 @@ const Index = () => {
   
   const { 
     stories, 
-    loading
+    loading,
+    forceSync
   } = useStories();
 
   // Get featured story (most recent one)
@@ -115,6 +116,7 @@ const Index = () => {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onRandomStory={handleRandomStory}
+        onSync={forceSync}
       />
       
       <main>
