@@ -47,6 +47,57 @@ export type Database = {
         }
         Relationships: []
       }
+      stories: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          is_active: boolean
+          slug: string
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          upload_date: string | null
+          video_id: string
+          video_url: string
+          views: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_active?: boolean
+          slug: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          upload_date?: string | null
+          video_id: string
+          video_url: string
+          views?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_active?: boolean
+          slug?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          upload_date?: string | null
+          video_id?: string
+          video_url?: string
+          views?: number | null
+        }
+        Relationships: []
+      }
       story_notifications: {
         Row: {
           id: string
@@ -100,7 +151,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_slug: {
+        Args: { title: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
