@@ -108,17 +108,18 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch video details for duration
+    // Fetch video details for duration, view count, and statistics
     const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId);
     const videosResponse = await fetch(
-      `${API_BASE_URL}/videos?part=contentDetails&id=${videoIds.join(',')}&key=${YOUTUBE_API_KEY}`
+      `${API_BASE_URL}/videos?part=contentDetails,statistics&id=${videoIds.join(',')}&key=${YOUTUBE_API_KEY}`
     );
 
     let videosData = { items: [] };
     if (videosResponse.ok) {
       videosData = await videosResponse.json();
+      console.log(`Fetched detailed data for ${videosData.items?.length || 0} videos`);
     } else {
-      console.warn('Failed to fetch video details, continuing without duration info');
+      console.warn('Failed to fetch video details, continuing without detailed info');
     }
     
     // Transform YouTube data to our Story format with slugs
@@ -146,7 +147,7 @@ Deno.serve(async (req) => {
         duration: videoDetails?.contentDetails?.duration || '',
         upload_date: item.snippet.publishedAt,
         tags: tags,
-        views: Math.floor(Math.random() * 5000) + 100,
+        views: videoDetails?.statistics?.viewCount ? parseInt(videoDetails.statistics.viewCount) : 0,
         slug: slug,
         is_active: true
       };
@@ -227,6 +228,8 @@ Deno.serve(async (req) => {
             thumbnail_url: story.thumbnail_url,
             duration: story.duration,
             tags: story.tags,
+            views: story.views,
+            upload_date: story.upload_date,
             is_active: true
           })
           .eq('video_id', story.video_id);
