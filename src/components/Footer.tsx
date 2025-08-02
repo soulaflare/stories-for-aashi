@@ -16,7 +16,7 @@ const Footer = () => {
           
           {/* Copyright */}
           <div className="text-sm text-muted-foreground">
-            <p>© {currentYear} Stories for Aashi. A personal collection of moments.</p>
+            <p>© 2025 Stories for Aashi. collection of stories curated by Aditya.</p>
           </div>
           
           {/* Decorative Line */}
