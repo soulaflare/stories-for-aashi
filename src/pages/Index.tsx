@@ -1,12 +1,126 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import VideoGrid from '@/components/VideoGrid';
+import VideoModal from '@/components/VideoModal';
+import Footer from '@/components/Footer';
+import { useYouTubePlaylist } from '@/hooks/useYouTubePlaylist';
+import { useSearch } from '@/hooks/useSearch';
+import { Story } from '@/types/story';
+import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const { 
+    stories, 
+    featuredStory, 
+    loading, 
+    getRandomStory 
+  } = useYouTubePlaylist();
+  
+  const { 
+    searchQuery, 
+    setSearchQuery, 
+    filteredStories 
+  } = useSearch(stories);
+
+  const handleVideoClick = (story: Story) => {
+    setSelectedStory(story);
+    setIsModalOpen(true);
+  };
+
+  const handleRandomStory = async () => {
+    try {
+      const randomStory = await getRandomStory();
+      if (randomStory) {
+        handleVideoClick(randomStory);
+      } else {
+        toast({
+          title: "No stories available",
+          description: "Please check back later for new stories.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load a random story. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleStartWatching = () => {
+    if (featuredStory) {
+      handleVideoClick(featuredStory);
+    } else if (filteredStories.length > 0) {
+      handleVideoClick(filteredStories[0]);
+    } else {
+      handleRandomStory();
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedStory(null);
+  };
+
+  const getCurrentStoryIndex = () => {
+    if (!selectedStory) return -1;
+    return filteredStories.findIndex(story => story.id === selectedStory.id);
+  };
+
+  const handlePreviousStory = () => {
+    const currentIndex = getCurrentStoryIndex();
+    if (currentIndex > 0) {
+      setSelectedStory(filteredStories[currentIndex - 1]);
+    }
+  };
+
+  const handleNextStory = () => {
+    const currentIndex = getCurrentStoryIndex();
+    if (currentIndex < filteredStories.length - 1) {
+      setSelectedStory(filteredStories[currentIndex + 1]);
+    }
+  };
+
+  const currentIndex = getCurrentStoryIndex();
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex < filteredStories.length - 1;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onRandomStory={handleRandomStory}
+      />
+      
+      <main>
+        <HeroSection
+          onStartWatching={handleStartWatching}
+          featuredStory={featuredStory}
+        />
+        
+        <VideoGrid
+          stories={filteredStories}
+          loading={loading}
+          onVideoClick={handleVideoClick}
+        />
+      </main>
+      
+      <Footer />
+      
+      <VideoModal
+        story={selectedStory}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onPrevious={hasPrevious ? handlePreviousStory : undefined}
+        onNext={hasNext ? handleNextStory : undefined}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+      />
     </div>
   );
 };
