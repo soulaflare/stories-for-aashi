@@ -119,11 +119,11 @@ export function useStoryBySlug(slug: string): { story: Story | null; loading: bo
           .eq('is_active', true)
           .single();
 
-        if (dbError) {
-          console.error('Error fetching story by slug:', dbError);
+        if (dbError || !dbStory) {
+          console.error('Story not found or inactive:', dbError);
           setError('Story not found');
           setStory(null);
-        } else if (dbStory) {
+        } else {
           const transformedStory: Story = {
             id: dbStory.video_id,
             title: dbStory.title,
