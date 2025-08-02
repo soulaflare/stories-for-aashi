@@ -48,17 +48,26 @@ const FALLBACK_STORIES: Story[] = [
   }
 ];
 
-// YouTube API configuration
-const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
-const PLAYLIST_ID = import.meta.env.VITE_YOUTUBE_PLAYLIST_ID || 'YOUR_PLAYLIST_ID';
-const API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
+import { supabase } from '@/integrations/supabase/client';
 
 class YouTubeService {
   private cache: Map<string, { data: any; timestamp: number }> = new Map();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-  private isValidApiKey(): boolean {
-    return Boolean(YOUTUBE_API_KEY && YOUTUBE_API_KEY !== 'your_youtube_api_key_here');
+  private async callYouTubeEdgeFunction(): Promise<Story[]> {
+    try {
+      const { data, error } = await supabase.functions.invoke('fetch-youtube-playlist');
+      
+      if (error) {
+        console.error('Edge function error:', error);
+        return FALLBACK_STORIES;
+      }
+      
+      return data?.stories || FALLBACK_STORIES;
+    } catch (error) {
+      console.error('Failed to call YouTube edge function:', error);
+      return FALLBACK_STORIES;
+    }
   }
 
   private getCachedData<T>(key: string): T | null {
@@ -102,49 +111,18 @@ class YouTubeService {
       return cached;
     }
 
-    // If no API key, return fallback stories
-    if (!this.isValidApiKey()) {
-      console.warn('YouTube API key not configured. Using fallback stories.');
-      this.setCachedData('playlist_videos', FALLBACK_STORIES);
-      return FALLBACK_STORIES;
-    }
-
     try {
-      // Fetch playlist items
-      const playlistResponse = await fetch(
-        `${API_BASE_URL}/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=50&key=${YOUTUBE_API_KEY}`
-      );
-
-      if (!playlistResponse.ok) {
-        throw new Error(`YouTube API error: ${playlistResponse.status}`);
-      }
-
-      const playlistData: YouTubePlaylistResponse = await playlistResponse.json();
+      console.log('Fetching YouTube playlist via edge function...');
+      const stories = await this.callYouTubeEdgeFunction();
       
-      if (!playlistData.items || playlistData.items.length === 0) {
-        console.warn('No videos found in playlist. Using fallback stories.');
+      if (stories.length > 0) {
+        this.setCachedData('playlist_videos', stories);
+        console.log(`Successfully loaded ${stories.length} stories from YouTube`);
+      } else {
+        console.warn('No stories returned from edge function, using fallback');
         this.setCachedData('playlist_videos', FALLBACK_STORIES);
         return FALLBACK_STORIES;
       }
-
-      // Fetch video details for duration
-      const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId);
-      const videosResponse = await fetch(
-        `${API_BASE_URL}/videos?part=contentDetails&id=${videoIds.join(',')}&key=${YOUTUBE_API_KEY}`
-      );
-
-      const videosData = await videosResponse.json();
-      
-      // Merge playlist items with video details
-      const enrichedItems = playlistData.items.map(item => ({
-        ...item,
-        contentDetails: videosData.items?.find((video: any) => 
-          video.id === item.snippet.resourceId.videoId
-        )?.contentDetails
-      }));
-
-      const stories = this.transformYouTubeData(enrichedItems);
-      this.setCachedData('playlist_videos', stories);
       
       return stories;
     } catch (error) {
