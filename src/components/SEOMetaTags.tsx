@@ -10,7 +10,7 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
   if (isHomepage) {
     return (
       <Helmet>
-        <title>Magical Bedtime Stories for Children | Story Collection</title>
+        <title>Magical short stories for bedtime, awake time, and all times in between</title>
         <meta 
           name="description" 
           content="Discover a magical collection of bedtime stories for children. Perfect for bedtime routines, our stories inspire imagination and sweet dreams." 
