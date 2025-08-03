@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Search, Shuffle, User, LogOut, RefreshCw } from 'lucide-react';
+import { Search, Shuffle, User, LogOut, RefreshCw, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from './AuthModal';
+import UserSettingsModal from './UserSettingsModal';
 import { ThemeToggle } from './ThemeToggle';
 import bookIcon from '/book-icon.png';
 
@@ -18,6 +19,7 @@ interface HeaderProps {
 const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderProps) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const { user, signOut, loading } = useAuth();
 
   return (
@@ -96,6 +98,10 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
                         {user.email}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => setShowSettingsModal(true)}>
+                        <Settings className="mr-2 h-4 w-4" />
+                        Settings
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => signOut()}>
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign Out
@@ -121,6 +127,11 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
     <AuthModal 
       isOpen={showAuthModal} 
       onClose={() => setShowAuthModal(false)} 
+    />
+    
+    <UserSettingsModal 
+      isOpen={showSettingsModal} 
+      onClose={() => setShowSettingsModal(false)} 
     />
   </>
   );
