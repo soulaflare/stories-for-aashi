@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import UserSettingsModal from './UserSettingsModal';
 import { ThemeToggle } from './ThemeToggle';
@@ -21,6 +22,14 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const { user, signOut, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogoClick = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  };
 
   return (
     <>
@@ -28,7 +37,12 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
       <div className="container-responsive py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div 
+            className={`flex items-center space-x-2 ${
+              location.pathname !== '/' ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''
+            }`}
+            onClick={handleLogoClick}
+          >
             <img src={bookIcon} alt="Book icon" className="h-10 w-10" />
             <h1 className="text-2xl font-display font-medium text-foreground">
               Stories for Aashi
