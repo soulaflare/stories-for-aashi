@@ -48,8 +48,7 @@ const Header = ({
             <div className="flex items-center justify-between">
               <div className={`flex items-center space-x-2 ${location.pathname !== '/' ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`} onClick={handleLogoClick}>
                 <img src={bookIcon} alt="Book icon" className="h-8 w-8" />
-                <h1 className="text-lg font-display font-medium text-foreground">Stories for 
-Aashi</h1>
+                <h1 className="text-lg font-display font-medium text-foreground">Stories for Aashi</h1>
               </div>
 
               <div className="flex items-center space-x-1">

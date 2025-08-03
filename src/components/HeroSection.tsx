@@ -1,6 +1,5 @@
 import { Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 interface HeroSectionProps {
   onStartWatching: () => void;
   onBrowseCollection: () => void;
@@ -9,10 +8,12 @@ interface HeroSectionProps {
     thumbnailUrl: string;
   };
 }
-
-const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: HeroSectionProps) => {
-  return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-secondary/20">
+const HeroSection = ({
+  onStartWatching,
+  onBrowseCollection,
+  featuredStory
+}: HeroSectionProps) => {
+  return <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-secondary/20">
       <div className="container-responsive">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Typography */}
@@ -22,10 +23,7 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
                 Stories for
                 <span className="block text-primary">Aashi</span>
               </h1>
-              <p className="text-subtitle max-w-lg">
-                A curated collection of short stories, crafted with love and 
-                meant to be discovered one moment at a time.
-              </p>
+              <p className="text-subtitle max-w-lg">A curated collection of short stories, crafted with love. Journey into new worlds, discover new perspectives, and perhaps better understand yourself.</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -33,12 +31,7 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
                 <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                 Start Watching
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="hover:bg-secondary"
-                onClick={onBrowseCollection}
-              >
+              <Button variant="outline" size="lg" className="hover:bg-secondary" onClick={onBrowseCollection}>
                 Browse Collection
               </Button>
             </div>
@@ -48,14 +41,9 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
           {/* Right: Featured Content */}
           <div className="relative animate-slide-up">
             <div className="relative">
-              {featuredStory ? (
-                <div className="video-card group cursor-pointer" onClick={onStartWatching}>
+              {featuredStory ? <div className="video-card group cursor-pointer" onClick={onStartWatching}>
                   <div className="video-card-image">
-                    <img
-                      src={featuredStory.thumbnailUrl}
-                      alt={featuredStory.title}
-                      className="w-full h-full object-cover transition-transform duration-500 scale-[1.006] group-hover:scale-105"
-                    />
+                    <img src={featuredStory.thumbnailUrl} alt={featuredStory.title} className="w-full h-full object-cover transition-transform duration-500 scale-[1.006] group-hover:scale-105" />
                     
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-white/90 backdrop-blur-sm rounded-full p-4">
@@ -67,9 +55,7 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
                     <h3 className="text-card-title mb-2">{featuredStory.title}</h3>
                     <p className="text-card-meta">Featured Story</p>
                   </div>
-                </div>
-              ) : (
-                <div className="video-card">
+                </div> : <div className="video-card">
                   <div className="video-card-image bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                     <div className="text-center space-y-4">
                       <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
@@ -82,8 +68,7 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
                     <h3 className="text-card-title mb-2">Ready to Begin</h3>
                     <p className="text-card-meta">Start your journey</p>
                   </div>
-                </div>
-              )}
+                </div>}
               
               {/* Decorative Elements */}
               <div className="absolute -z-10 -top-4 -right-4 w-32 h-32 bg-accent/10 rounded-full blur-xl"></div>
@@ -92,8 +77,6 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
