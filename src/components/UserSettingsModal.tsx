@@ -299,13 +299,14 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
               {/* Danger Zone */}
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-destructive">Danger Zone</h3>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
+                <div className="flex items-start justify-between gap-6">
+                  <div className="space-y-0.5 flex-1">
                     <Label className="text-destructive">Delete account</Label>
                     <div className="text-sm text-muted-foreground">
                       Permanently delete your account and all data
                     </div>
                   </div>
+                  <div className="flex-shrink-0">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" size="sm">
@@ -343,6 +344,7 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+                  </div>
                 </div>
               </div>
               
