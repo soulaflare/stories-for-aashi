@@ -46,8 +46,7 @@ const TermsOfService = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                Stories for Aashi is a curated collection of video stories designed primarily for children's 
-                entertainment and education. Our service provides:
+                Stories for Aashi is a curated collection of video stories for entertainment. Our service provides:
               </p>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                 <li>Access to a curated library of video stories</li>

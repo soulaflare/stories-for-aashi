@@ -13,28 +13,28 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
         <title>Magical short stories for bedtime, awake time, and all times in between</title>
         <meta 
           name="description" 
-          content="Discover a magical collection of bedtime stories for children. Perfect for bedtime routines, our stories inspire imagination and sweet dreams." 
+          content="Discover a magical collection of stories. Perfect for relaxation and entertainment, our stories inspire imagination and wonder." 
         />
-        <meta name="keywords" content="bedtime stories, children stories, kids entertainment, educational content, family time" />
+        <meta name="keywords" content="stories, entertainment, video stories, magical tales, family time" />
         
         {/* Open Graph tags */}
-        <meta property="og:title" content="Magical Bedtime Stories for Children" />
-        <meta property="og:description" content="Discover a magical collection of bedtime stories for children. Perfect for bedtime routines, our stories inspire imagination and sweet dreams." />
+        <meta property="og:title" content="Magical Stories for Entertainment" />
+        <meta property="og:description" content="Discover a magical collection of stories. Perfect for relaxation and entertainment, our stories inspire imagination and wonder." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.href} />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Magical Bedtime Stories for Children" />
-        <meta name="twitter:description" content="Discover a magical collection of bedtime stories for children." />
+        <meta name="twitter:title" content="Magical Stories for Entertainment" />
+        <meta name="twitter:description" content="Discover a magical collection of stories for entertainment." />
         
         {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "Magical Bedtime Stories",
-            "description": "A collection of magical bedtime stories for children",
+            "name": "Magical Stories Collection",
+            "description": "A collection of magical stories for entertainment",
             "url": window.location.origin,
             "potentialAction": {
               "@type": "SearchAction",
@@ -71,16 +71,16 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
 
   return (
     <Helmet>
-      <title>{story.title} | Magical Bedtime Stories</title>
-      <meta name="description" content={story.description || `Watch ${story.title} - A magical bedtime story for children.`} />
-      <meta name="keywords" content={`${story.tags?.join(', ') || 'bedtime story'}, children stories, kids entertainment`} />
+      <title>{story.title} | Magical Stories</title>
+      <meta name="description" content={story.description || `Watch ${story.title} - A magical story for entertainment.`} />
+      <meta name="keywords" content={`${story.tags?.join(', ') || 'story'}, entertainment, video stories`} />
       
       {/* Canonical URL */}
       <link rel="canonical" href={storyUrl} />
       
       {/* Open Graph tags */}
       <meta property="og:title" content={story.title} />
-      <meta property="og:description" content={story.description || `Watch ${story.title} - A magical bedtime story for children.`} />
+      <meta property="og:description" content={story.description || `Watch ${story.title} - A magical story for entertainment.`} />
       <meta property="og:type" content="video.other" />
       <meta property="og:url" content={storyUrl} />
       <meta property="og:image" content={story.thumbnailUrl} />
@@ -93,7 +93,7 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
       {/* Twitter Card tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={story.title} />
-      <meta name="twitter:description" content={story.description || `Watch ${story.title} - A magical bedtime story for children.`} />
+      <meta name="twitter:description" content={story.description || `Watch ${story.title} - A magical story for entertainment.`} />
       <meta name="twitter:image" content={story.thumbnailUrl} />
       
       {/* Structured Data for Video */}
@@ -113,13 +113,9 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
             "interactionType": { "@type": "WatchAction" },
             "userInteractionCount": story.views || 0
           },
-          "keywords": story.tags?.join(', ') || 'bedtime story, children',
-          "genre": "Children's Entertainment",
-          "familyFriendly": true,
-          "audience": {
-            "@type": "Audience",
-            "audienceType": "Children"
-          }
+          "keywords": story.tags?.join(', ') || 'story, entertainment',
+          "genre": "Entertainment",
+          "familyFriendly": true
         })}
       </script>
     </Helmet>

@@ -216,7 +216,7 @@ export default function StoryPage() {
             <CardContent className="p-6 text-center">
               <h2 className="text-xl font-semibold mb-2">Enjoy this story?</h2>
               <p className="text-muted-foreground mb-4">
-                Discover more magical bedtime stories for your little ones.
+                Discover more magical stories for entertainment.
               </p>
               <Button onClick={() => navigate('/')}>
                 Browse More Stories
