@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from './AuthModal';
+import { ThemeToggle } from './ThemeToggle';
 import bookIcon from '/book-icon.png';
 
 interface HeaderProps {
@@ -73,6 +74,8 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
               <Shuffle className="h-4 w-4" />
               <span className="hidden sm:inline">Surprise Me</span>
             </Button>
+            
+            <ThemeToggle />
 
             {!loading && (
               <>

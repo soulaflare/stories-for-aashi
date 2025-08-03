@@ -76,21 +76,50 @@
   }
   
   .dark {
-    --background: 120 15% 8%;
-    --foreground: 40 30% 95%;
-    --card: 120 15% 10%;
-    --card-foreground: 40 30% 95%;
-    --primary: 95 25% 65%;
-    --primary-foreground: 120 15% 8%;
-    --secondary: 120 10% 15%;
-    --secondary-foreground: 40 30% 95%;
-    --muted: 120 10% 15%;
-    --muted-foreground: 120 5% 65%;
-    --accent: 45 70% 70%;
-    --accent-foreground: 120 15% 8%;
-    --border: 120 10% 20%;
-    --input: 120 10% 18%;
-    --ring: 95 25% 65%;
+    /* Cozy evening library aesthetic */
+    --background: 240 15% 6%; /* Deep charcoal with slight blue undertone */
+    --foreground: 40 20% 92%; /* Warm cream text */
+    
+    /* Card System - Warmer dark tones */
+    --card: 240 12% 9%; /* Slightly lighter than background */
+    --card-foreground: 40 20% 92%;
+    
+    /* Interactive Elements */
+    --popover: 240 12% 9%;
+    --popover-foreground: 40 20% 92%;
+    
+    /* Brand Colors - Enhanced for dark mode */
+    --primary: 95 30% 60%; /* Brighter sage for visibility */
+    --primary-foreground: 240 15% 8%; /* Dark text on primary */
+    --primary-hover: 95 30% 65%;
+    
+    /* Secondary Palette - Warmer tones */
+    --secondary: 240 8% 12%; /* Subtle warm dark */
+    --secondary-foreground: 40 15% 85%;
+    --secondary-hover: 240 8% 15%;
+    
+    /* Accent System - Warmer gold in dark mode */
+    --accent: 45 65% 65%; /* Slightly muted but visible gold */
+    --accent-foreground: 240 15% 8%;
+    --accent-hover: 45 65% 70%;
+    
+    /* Neutral Tones - Better contrast */
+    --muted: 240 8% 12%;
+    --muted-foreground: 240 6% 60%; /* Better readability */
+    
+    /* Utility Colors */
+    --destructive: 0 75% 65%;
+    --destructive-foreground: 40 20% 92%;
+    
+    /* Borders & Inputs - Subtle but visible */
+    --border: 240 8% 18%; /* More visible borders */
+    --input: 240 8% 15%; /* Input backgrounds */
+    --ring: 95 30% 60%; /* Focus rings */
+    
+    /* Enhanced shadows for dark mode */
+    --shadow-soft: 0 2px 8px hsl(240 15% 0% / 0.25);
+    --shadow-medium: 0 4px 16px hsl(240 15% 0% / 0.35);
+    --shadow-strong: 0 8px 32px hsl(240 15% 0% / 0.45);
   }
 }
 
@@ -102,6 +131,7 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     font-feature-settings: 'liga' 1, 'kern' 1;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {
