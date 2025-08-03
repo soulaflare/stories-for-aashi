@@ -37,7 +37,12 @@ export const useWatchHistory = () => {
   };
 
   const markAsWatched = async (videoId: string, videoTitle?: string) => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, cannot mark as watched');
+      return;
+    }
+
+    console.log('Marking video as watched:', { videoId, videoTitle, userId: user.id });
 
     try {
       const { error } = await supabase
@@ -48,8 +53,12 @@ export const useWatchHistory = () => {
           video_title: videoTitle
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error marking video as watched:', error);
+        throw error;
+      }
 
+      console.log('Successfully marked video as watched');
       setWatchedVideoIds(prev => new Set([...prev, videoId]));
     } catch (error) {
       console.error('Error marking video as watched:', error);
