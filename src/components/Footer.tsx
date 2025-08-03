@@ -14,9 +14,15 @@ const Footer = () => {
             <span className="text-lg font-body">for Aashi</span>
           </div>
           
-          {/* Copyright */}
-          <div className="text-sm text-muted-foreground">
+          {/* Copyright and Links */}
+          <div className="text-sm text-muted-foreground space-y-2">
             <p>© 2025 Stories for Aashi. collection of stories curated by Aditya.</p>
+            <a 
+              href="/privacy" 
+              className="text-muted-foreground hover:text-foreground transition-colors underline"
+            >
+              Privacy Policy
+            </a>
           </div>
           
           {/* Decorative Line */}
