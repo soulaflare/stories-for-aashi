@@ -7,16 +7,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useWatchHistory } from '@/hooks/useWatchHistory';
-import { Loader2, Download, Trash2, AlertTriangle } from 'lucide-react';
+import { Loader2, Download, Trash2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Separator } from '@/components/ui/separator';
 
 interface UserSettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSync?: () => void;
 }
 
-const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
+const UserSettingsModal = ({ isOpen, onClose, onSync }: UserSettingsModalProps) => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const { watchedVideoIds, refetch: refetchWatchHistory } = useWatchHistory();
@@ -26,6 +27,7 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
   const [exporting, setExporting] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [clearingHistory, setClearingHistory] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen && user) {
@@ -248,6 +250,27 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
     }
   };
 
+  const handleSyncStories = async () => {
+    if (!onSync) return;
+    
+    setSyncLoading(true);
+    try {
+      await onSync();
+      toast({
+        title: "Stories synced",
+        description: "Successfully synced with YouTube playlist",
+      });
+    } catch (error) {
+      toast({
+        title: "Sync failed",
+        description: "Failed to sync stories. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSyncLoading(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -334,6 +357,35 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
               </div>
 
               <Separator />
+
+              {/* Advanced */}
+              {onSync && (
+                <>
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Advanced</h3>
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-medium">Sync Stories</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Manually refresh stories from the YouTube playlist
+                        </p>
+                      </div>
+                      <Button
+                        onClick={handleSyncStories}
+                        disabled={syncLoading}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center space-x-2"
+                      >
+                        <RefreshCw className={`h-4 w-4 ${syncLoading ? 'animate-spin' : ''}`} />
+                        <span>{syncLoading ? 'Syncing...' : 'Sync Now'}</span>
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Separator />
+                </>
+              )}
 
               {/* Danger Zone */}
               <div className="space-y-4">

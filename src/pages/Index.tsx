@@ -125,8 +125,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOMetaTags isHomepage={true} />
-      <Header
-        searchQuery={searchQuery}
+      <Header 
+        searchQuery={searchQuery} 
         onSearchChange={setSearchQuery}
         onRandomStory={handleRandomStory}
         onSync={forceSync}

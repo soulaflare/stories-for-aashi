@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
         <title>Privacy Policy | Stories for Aashi</title>
         <meta name="description" content="Learn how we collect, use, and protect your personal information on our video story platform." />
       </Helmet>
-      <Header searchQuery="" onSearchChange={() => {}} onRandomStory={() => {}} onSync={() => {}} />
+      <Header searchQuery="" onSearchChange={() => {}} onRandomStory={() => {}} />
       
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="space-y-8">

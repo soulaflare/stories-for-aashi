@@ -69,18 +69,6 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-2">
-            {onSync && (
-              <Button
-                onClick={onSync}
-                variant="outline"
-                size="sm"
-                className="flex items-center space-x-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-                <span className="hidden sm:inline">Sync</span>
-              </Button>
-            )}
-            
             <Button
               onClick={onRandomStory}
               variant="outline"
@@ -145,7 +133,8 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
     
     <UserSettingsModal 
       isOpen={showSettingsModal} 
-      onClose={() => setShowSettingsModal(false)} 
+      onClose={() => setShowSettingsModal(false)}
+      onSync={onSync}
     />
   </>
   );
