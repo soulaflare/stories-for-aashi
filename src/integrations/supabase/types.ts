@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      featured_stories: {
+        Row: {
+          created_at: string
+          featured_date: string
+          id: string
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          featured_date?: string
+          id?: string
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          featured_date?: string
+          id?: string
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "featured_stories_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -154,6 +186,21 @@ export type Database = {
       generate_slug: {
         Args: { title: string }
         Returns: string
+      }
+      get_featured_story_for_user: {
+        Args: { p_user_id?: string }
+        Returns: {
+          story_id: string
+          title: string
+          description: string
+          thumbnail_url: string
+          video_url: string
+          duration: string
+          upload_date: string
+          tags: string[]
+          views: number
+          slug: string
+        }[]
       }
     }
     Enums: {

@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { useStories } from '@/hooks/useStories';
 import { useSearch } from '@/hooks/useSearch';
 import { useWatchHistory } from '@/hooks/useWatchHistory';
+import { useFeaturedStory } from '@/hooks/useFeaturedStory';
 import { Story } from '@/types/story';
 import { toast } from '@/hooks/use-toast';
 import SEOMetaTags from '@/components/SEOMetaTags';
@@ -22,9 +23,7 @@ const Index = () => {
   } = useStories();
 
   const { isWatched } = useWatchHistory();
-
-  // Get featured story (most recent one)
-  const featuredStory = stories.length > 0 ? stories[0] : null;
+  const { featuredStory } = useFeaturedStory();
 
   // Function to get a random story, preferring unwatched videos
   const getRandomStory = async () => {
