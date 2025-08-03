@@ -1,1 +1,7 @@
 project_id = "cvhmlrijuidvrsrzxmfv"
+
+[functions.fetch-youtube-playlist]
+verify_jwt = false
+
+[functions.send-new-video-notification]
+verify_jwt = false

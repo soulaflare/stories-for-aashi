@@ -211,6 +211,33 @@ Deno.serve(async (req) => {
         console.error('Error inserting new stories:', insertError);
       } else {
         console.log('Successfully inserted new stories');
+        
+        // Send notifications for new videos
+        for (const story of newStories) {
+          try {
+            console.log(`Sending notification for new video: ${story.title}`);
+            const notificationResponse = await supabase.functions.invoke('send-new-video-notification', {
+              body: { 
+                video: {
+                  video_id: story.video_id,
+                  title: story.title,
+                  description: story.description,
+                  thumbnail_url: story.thumbnail_url,
+                  video_url: story.video_url,
+                  upload_date: story.upload_date
+                }
+              }
+            });
+            
+            if (notificationResponse.error) {
+              console.error('Error sending notification for video:', story.title, notificationResponse.error);
+            } else {
+              console.log('Notification sent successfully for video:', story.title);
+            }
+          } catch (error) {
+            console.error('Failed to send notification for video:', story.title, error);
+          }
+        }
       }
     }
 
