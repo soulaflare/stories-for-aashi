@@ -23,7 +23,7 @@ const HeroSection = ({
                 Stories for
                 <span className="block text-primary">Aashi</span>
               </h1>
-              <p className="text-subtitle max-w-lg">A curated collection of short stories, crafted with love. Journey into new worlds, discover new perspectives, and perhaps better understand yourself.</p>
+              <p className="text-subtitle max-w-lg">A lovingly curated trove of short tales—each a doorway to distant worlds, perspectives, and perhaps even self-discovery.</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
