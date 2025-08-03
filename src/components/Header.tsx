@@ -58,7 +58,7 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
                 onClick={onSync}
                 variant="outline"
                 size="sm"
-                className="flex items-center space-x-2 hover:bg-secondary"
+                className="flex items-center space-x-2"
               >
                 <RefreshCw className="h-4 w-4" />
                 <span className="hidden sm:inline">Sync</span>
@@ -69,7 +69,7 @@ const Header = ({ searchQuery, onSearchChange, onRandomStory, onSync }: HeaderPr
               onClick={onRandomStory}
               variant="outline"
               size="sm"
-              className="flex items-center space-x-2 hover:bg-secondary"
+              className="flex items-center space-x-2"
             >
               <Shuffle className="h-4 w-4" />
               <span className="hidden sm:inline">Surprise Me</span>
