@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { Loader2, Mail, Lock } from 'lucide-react';
 
@@ -20,6 +21,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [agreeToPrivacy, setAgreeToPrivacy] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +43,12 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!agreeToTerms || !agreeToPrivacy) {
+      setError('You must agree to the Terms of Service and Privacy Policy to create an account.');
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -62,6 +71,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     setPassword('');
     setError(null);
     setSuccess(null);
+    setAgreeToTerms(false);
+    setAgreeToPrivacy(false);
   };
 
   return (
@@ -159,6 +170,49 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 </div>
               </div>
 
+              {/* Terms and Privacy Agreement */}
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="agree-terms"
+                    checked={agreeToTerms}
+                    onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
+                    className="mt-1"
+                  />
+                  <Label htmlFor="agree-terms" className="text-sm text-muted-foreground leading-relaxed">
+                    I agree to the{' '}
+                    <a 
+                      href="/terms" 
+                      target="_blank" 
+                      className="text-primary hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Terms of Service
+                    </a>
+                  </Label>
+                </div>
+                
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="agree-privacy"
+                    checked={agreeToPrivacy}
+                    onCheckedChange={(checked) => setAgreeToPrivacy(checked === true)}
+                    className="mt-1"
+                  />
+                  <Label htmlFor="agree-privacy" className="text-sm text-muted-foreground leading-relaxed">
+                    I agree to the{' '}
+                    <a 
+                      href="/privacy" 
+                      target="_blank" 
+                      className="text-primary hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Privacy Policy
+                    </a>
+                  </Label>
+                </div>
+              </div>
+
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
@@ -171,7 +225,11 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading || !agreeToTerms || !agreeToPrivacy}
+              >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign Up
               </Button>

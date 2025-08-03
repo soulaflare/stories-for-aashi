@@ -17,12 +17,20 @@ const Footer = () => {
           {/* Copyright and Links */}
           <div className="text-sm text-muted-foreground space-y-2">
             <p>© 2025 Stories for Aashi. collection of stories curated by Aditya.</p>
-            <a 
-              href="/privacy" 
-              className="text-muted-foreground hover:text-foreground transition-colors underline"
-            >
-              Privacy Policy
-            </a>
+            <div className="flex gap-4 justify-center">
+              <a 
+                href="/privacy" 
+                className="text-muted-foreground hover:text-foreground transition-colors underline"
+              >
+                Privacy Policy
+              </a>
+              <a 
+                href="/terms" 
+                className="text-muted-foreground hover:text-foreground transition-colors underline"
+              >
+                Terms of Service
+              </a>
+            </div>
           </div>
           
           {/* Decorative Line */}
