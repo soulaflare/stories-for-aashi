@@ -179,8 +179,10 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
     try {
       console.log('Starting account deletion request for user:', user.id);
       
-      // Generate deletion token and schedule deletion for 30 days from now
+      // Generate deletion token and calculate deletion date (30 days from now)
       const deletionToken = crypto.randomUUID();
+      const deletionDate = new Date();
+      deletionDate.setDate(deletionDate.getDate() + 30);
       
       // Update profile to mark for deletion
       const { error: profileError } = await supabase
@@ -203,6 +205,27 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
       }
 
       console.log('Account scheduled for deletion successfully');
+
+      // Send deletion confirmation email
+      try {
+        const emailResponse = await supabase.functions.invoke('send-deletion-email', {
+          body: {
+            email: user.email,
+            deletionToken: deletionToken,
+            deletionDate: deletionDate.toISOString()
+          }
+        });
+
+        if (emailResponse.error) {
+          console.error('Error sending deletion email:', emailResponse.error);
+          // Don't block the deletion process if email fails
+        } else {
+          console.log('Deletion confirmation email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Failed to send deletion confirmation email:', emailError);
+        // Don't block the deletion process if email fails
+      }
 
       // Sign out the user immediately
       await supabase.auth.signOut();
