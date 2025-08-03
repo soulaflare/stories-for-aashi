@@ -54,7 +54,7 @@ const HeroSection = ({ onStartWatching, onBrowseCollection, featuredStory }: Her
                     <img
                       src={featuredStory.thumbnailUrl}
                       alt={featuredStory.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 scale-[1.006] group-hover:scale-105"
                     />
                     
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -47,7 +47,7 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
         <img
           src={story.thumbnailUrl}
           alt={story.title}
-          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 block"
+          className="w-full h-full object-cover object-center transition-transform duration-500 scale-[1.006] group-hover:scale-105 block"
           loading="lazy"
         />
         
