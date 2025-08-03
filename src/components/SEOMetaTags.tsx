@@ -15,7 +15,7 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
           name="description" 
           content="Discover a magical collection of stories. Perfect for relaxation and entertainment, our stories inspire imagination and wonder." 
         />
-        <meta name="keywords" content="stories, entertainment, video stories, magical tales, family time" />
+        <meta name="keywords" content="stories, entertainment, video stories, magical tales, bedtime stories, children stories, family time" />
         
         {/* Open Graph tags */}
         <meta property="og:title" content="Magical Stories for Entertainment" />
@@ -73,7 +73,7 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
     <Helmet>
       <title>{story.title} | Magical Stories</title>
       <meta name="description" content={story.description || `Watch ${story.title} - A magical story for entertainment.`} />
-      <meta name="keywords" content={`${story.tags?.join(', ') || 'story'}, entertainment, video stories`} />
+      <meta name="keywords" content={`${story.tags?.join(', ') || 'story'}, entertainment, video stories, bedtime stories, children stories`} />
       
       {/* Canonical URL */}
       <link rel="canonical" href={storyUrl} />
@@ -113,7 +113,7 @@ export default function SEOMetaTags({ story, isHomepage = false }: SEOMetaTagsPr
             "interactionType": { "@type": "WatchAction" },
             "userInteractionCount": story.views || 0
           },
-          "keywords": story.tags?.join(', ') || 'story, entertainment',
+          "keywords": story.tags?.join(', ') || 'story, entertainment, bedtime stories, children',
           "genre": "Entertainment",
           "familyFriendly": true
         })}
