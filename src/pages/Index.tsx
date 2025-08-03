@@ -6,6 +6,7 @@ import VideoModal from '@/components/VideoModal';
 import Footer from '@/components/Footer';
 import { useStories } from '@/hooks/useStories';
 import { useSearch } from '@/hooks/useSearch';
+import { useWatchHistory } from '@/hooks/useWatchHistory';
 import { Story } from '@/types/story';
 import { toast } from '@/hooks/use-toast';
 import SEOMetaTags from '@/components/SEOMetaTags';
@@ -20,14 +21,27 @@ const Index = () => {
     forceSync
   } = useStories();
 
+  const { isWatched } = useWatchHistory();
+
   // Get featured story (most recent one)
   const featuredStory = stories.length > 0 ? stories[0] : null;
 
-  // Function to get a random story
+  // Function to get a random story, preferring unwatched videos
   const getRandomStory = async () => {
     if (stories.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * stories.length);
-    return stories[randomIndex];
+    
+    // First, try to find unwatched videos
+    const unwatchedStories = stories.filter(story => !isWatched(story.videoUrl));
+    
+    if (unwatchedStories.length > 0) {
+      // Pick a random unwatched video
+      const randomIndex = Math.floor(Math.random() * unwatchedStories.length);
+      return unwatchedStories[randomIndex];
+    } else {
+      // If all videos are watched, pick any random video
+      const randomIndex = Math.floor(Math.random() * stories.length);
+      return stories[randomIndex];
+    }
   };
   
   const { 
