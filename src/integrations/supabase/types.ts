@@ -50,30 +50,39 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
+          deletion_requested_at: string | null
+          deletion_token: string | null
           display_name: string | null
           email: string | null
           email_notifications: boolean | null
           id: string
+          scheduled_for_deletion: boolean | null
           updated_at: string
           user_id: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          deletion_requested_at?: string | null
+          deletion_token?: string | null
           display_name?: string | null
           email?: string | null
           email_notifications?: boolean | null
           id?: string
+          scheduled_for_deletion?: boolean | null
           updated_at?: string
           user_id: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
+          deletion_requested_at?: string | null
+          deletion_token?: string | null
           display_name?: string | null
           email?: string | null
           email_notifications?: boolean | null
           id?: string
+          scheduled_for_deletion?: boolean | null
           updated_at?: string
           user_id?: string
         }

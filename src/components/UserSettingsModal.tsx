@@ -177,31 +177,47 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
 
     setDeleting(true);
     try {
-      // Delete user data from our tables
-      await supabase.from('watched_videos').delete().eq('user_id', user.id);
-      await supabase.from('featured_stories').delete().eq('user_id', user.id);
-      await supabase.from('profiles').delete().eq('user_id', user.id);
-
-      // Delete auth user (this will cascade delete related data)
-      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      console.log('Starting account deletion request for user:', user.id);
       
-      if (error) {
-        // If admin delete fails, try regular user deletion
-        const { error: signOutError } = await signOut();
-        if (signOutError) throw signOutError;
+      // Generate deletion token and schedule deletion for 30 days from now
+      const deletionToken = crypto.randomUUID();
+      
+      // Update profile to mark for deletion
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          deletion_requested_at: new Date().toISOString(),
+          scheduled_for_deletion: true,
+          deletion_token: deletionToken
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) {
+        console.error('Error scheduling account deletion:', profileError);
+        toast({
+          title: "Error",
+          description: "Failed to schedule account deletion. Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
 
+      console.log('Account scheduled for deletion successfully');
+
+      // Sign out the user immediately
+      await supabase.auth.signOut();
+      
       toast({
-        title: "Account deleted",
-        description: "Your account and all associated data have been permanently deleted.",
+        title: "Account Deletion Scheduled",
+        description: "Your account will be deleted in 30 days. Check your email for reactivation instructions.",
       });
       
       onClose();
     } catch (error) {
-      console.error('Error deleting account:', error);
+      console.error('Unexpected error during account deletion scheduling:', error);
       toast({
-        title: "Deletion failed",
-        description: "Failed to delete your account. Please contact support for assistance.",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -321,8 +337,9 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
                           Delete Account
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete your account 
-                          and remove all your data from our servers, including:
+                          Your account will be scheduled for deletion in 30 days. You'll receive an email 
+                          with instructions to reactivate your account if you change your mind. After 30 days, 
+                          all your data will be permanently deleted, including:
                           <ul className="list-disc list-inside mt-2 space-y-1">
                             <li>Your profile information</li>
                             <li>Watch history</li>
@@ -339,7 +356,7 @@ const UserSettingsModal = ({ isOpen, onClose }: UserSettingsModalProps) => {
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                          Delete Account
+                          Schedule Deletion
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

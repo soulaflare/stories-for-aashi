@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.send-new-video-notification]
 verify_jwt = false
+
+[functions.cleanup-deleted-accounts]
+verify_jwt = false

@@ -41,6 +41,22 @@ export const useAuth = () => {
   };
 
   const signIn = async (email: string, password: string) => {
+    // Check if user is scheduled for deletion before allowing sign in
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('scheduled_for_deletion, deletion_requested_at')
+      .eq('email', email)
+      .eq('scheduled_for_deletion', true)
+      .single();
+
+    if (profile) {
+      return { 
+        error: { 
+          message: 'Your account is scheduled for deletion. Check your email for reactivation instructions.' 
+        } 
+      };
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
