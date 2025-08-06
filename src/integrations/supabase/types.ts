@@ -163,6 +163,42 @@ export type Database = {
         }
         Relationships: []
       }
+      story_requests: {
+        Row: {
+          additional_notes: string | null
+          created_at: string
+          id: string
+          status: string
+          story_title: string
+          updated_at: string
+          user_email: string | null
+          user_id: string | null
+          user_name: string | null
+        }
+        Insert: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          status?: string
+          story_title: string
+          updated_at?: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Update: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          status?: string
+          story_title?: string
+          updated_at?: string
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Relationships: []
+      }
       watched_videos: {
         Row: {
           id: string

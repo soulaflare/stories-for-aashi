@@ -128,14 +128,14 @@ const Index = () => {
       <Header 
         searchQuery={searchQuery} 
         onSearchChange={setSearchQuery}
-        onRandomStory={handleRandomStory}
         onSync={forceSync}
       />
       
       <main>
-        <HeroSection
+        <HeroSection 
           onStartWatching={handleStartWatching}
           onBrowseCollection={handleBrowseCollection}
+          onRandomStory={handleRandomStory}
           featuredStory={featuredStory}
         />
         

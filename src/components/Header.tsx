@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Shuffle, User, LogOut, RefreshCw, Settings } from 'lucide-react';
+import { Search, MessageSquarePlus, User, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
@@ -8,23 +8,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AuthModal from './AuthModal';
 import UserSettingsModal from './UserSettingsModal';
+import { StoryRequestModal } from './StoryRequestModal';
 import { ThemeToggle } from './ThemeToggle';
 import bookIcon from '/book-icon.png';
 interface HeaderProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  onRandomStory: () => void;
   onSync?: () => void;
 }
 const Header = ({
   searchQuery,
   onSearchChange,
-  onRandomStory,
   onSync
 }: HeaderProps) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
   const {
     user,
     signOut,
@@ -94,8 +94,8 @@ const Header = ({
                   <input type="text" placeholder="Search stories..." value={searchQuery} onChange={e => onSearchChange(e.target.value)} onFocus={() => setIsSearchFocused(true)} onBlur={() => setIsSearchFocused(false)} className="search-input pl-10 w-full" />
                 </div>
               </div>
-              <Button onClick={onRandomStory} variant="outline" size="sm" className="flex items-center justify-center min-w-[44px]" aria-label="Surprise Me">
-                <Shuffle className="h-4 w-4" />
+              <Button onClick={() => setShowRequestModal(true)} variant="outline" size="sm" className="flex items-center justify-center min-w-[44px]" aria-label="Request Story">
+                <MessageSquarePlus className="h-4 w-4" />
               </Button>
             </div>
           </div> :
@@ -119,9 +119,9 @@ const Header = ({
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-2">
-              <Button onClick={onRandomStory} variant="outline" size="sm" className="flex items-center space-x-2">
-                <Shuffle className="h-4 w-4" />
-                <span>Surprise Me</span>
+              <Button onClick={() => setShowRequestModal(true)} variant="outline" size="sm" className="flex items-center space-x-2">
+                <MessageSquarePlus className="h-4 w-4" />
+                <span>Request Story</span>
               </Button>
               
               <ThemeToggle />
@@ -164,6 +164,8 @@ const Header = ({
     <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     
     <UserSettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} onSync={onSync} />
+    
+    <StoryRequestModal isOpen={showRequestModal} onClose={() => setShowRequestModal(false)} />
   </>;
 };
 export default Header;

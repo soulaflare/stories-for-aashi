@@ -1,8 +1,9 @@
-import { Play } from 'lucide-react';
+import { Play, Shuffle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 interface HeroSectionProps {
   onStartWatching: () => void;
   onBrowseCollection: () => void;
+  onRandomStory: () => void;
   featuredStory?: {
     title: string;
     thumbnailUrl: string;
@@ -11,6 +12,7 @@ interface HeroSectionProps {
 const HeroSection = ({
   onStartWatching,
   onBrowseCollection,
+  onRandomStory,
   featuredStory
 }: HeroSectionProps) => {
   return <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-secondary/20">
@@ -26,10 +28,19 @@ const HeroSection = ({
               <p className="text-subtitle max-w-lg">A lovingly curated trove of short stories—each a doorway to distant worlds, perspectives, and perhaps even self-discovery.</p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
               <Button onClick={onStartWatching} className="btn-hero group">
                 <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                 Start Watching
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onRandomStory}
+                className="h-10 w-10 p-0 flex-shrink-0"
+                title="Surprise Me!"
+              >
+                <Shuffle className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="lg" className="hover:bg-secondary" onClick={onBrowseCollection}>
                 Browse Collection

@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -273,7 +274,8 @@ const UserSettingsModal = ({ isOpen, onClose, onSync }: UserSettingsModalProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh]">
+        <ScrollArea className="max-h-[80vh] pr-4">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
@@ -452,6 +454,7 @@ const UserSettingsModal = ({ isOpen, onClose, onSync }: UserSettingsModalProps) 
             </>
           )}
         </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

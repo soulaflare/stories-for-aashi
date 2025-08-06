@@ -10,7 +10,7 @@ const TermsOfService = () => {
         <title>Terms of Service | Stories for Aashi</title>
         <meta name="description" content="Terms of service governing the use of our video story platform." />
       </Helmet>
-      <Header searchQuery="" onSearchChange={() => {}} onRandomStory={() => {}} />
+      <Header searchQuery="" onSearchChange={() => {}} />
       
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="space-y-8">
