@@ -42,7 +42,7 @@ const HeroSection = ({
               >
                 <Shuffle className="h-4 w-4" />
               </Button>
-              <Button variant="outline" className="h-9 px-4 sm:h-11 sm:px-6 hover:bg-secondary" onClick={onBrowseCollection}>
+              <Button variant="outline" className="h-9 px-4 sm:h-11 sm:px-6 w-full sm:w-auto hover:bg-secondary" onClick={onBrowseCollection}>
                 Browse Collection
               </Button>
             </div>
