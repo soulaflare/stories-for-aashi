@@ -28,8 +28,8 @@ const HeroSection = ({
               <p className="text-subtitle max-w-lg">A lovingly curated trove of short stories—each a doorway to distant worlds, perspectives, and perhaps even self-discovery.</p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
-              <Button onClick={onStartWatching} className="btn-hero group">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              <Button onClick={onStartWatching} className="btn-hero group h-9 px-4 sm:h-11 sm:px-6">
                 <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                 Start Watching
               </Button>
@@ -37,12 +37,12 @@ const HeroSection = ({
                 size="sm"
                 variant="outline"
                 onClick={onRandomStory}
-                className="h-10 w-10 p-0 flex-shrink-0"
+                className="h-9 w-9 sm:h-10 sm:w-10 p-0 flex-shrink-0"
                 title="Surprise Me!"
               >
                 <Shuffle className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="lg" className="hover:bg-secondary" onClick={onBrowseCollection}>
+              <Button variant="outline" className="h-9 px-4 sm:h-11 sm:px-6 hover:bg-secondary" onClick={onBrowseCollection}>
                 Browse Collection
               </Button>
             </div>
