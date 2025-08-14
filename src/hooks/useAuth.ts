@@ -70,12 +70,14 @@ export const useAuth = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    console.log('Starting Google OAuth flow');
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/`
       }
     });
+    console.log('Google OAuth response:', { data, error });
     return { error };
   };
 
