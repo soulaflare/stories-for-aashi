@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Story } from '@/types/story';
 import { useWatchHistory } from '@/hooks/useWatchHistory';
 import { useEffect } from 'react';
+import { linkifyText } from '@/lib/utils';
 
 interface VideoModalProps {
   story: Story | null;
@@ -114,7 +115,7 @@ const VideoModal = ({
           {story.description && (
             <div className="prose prose-sm max-w-none">
               <p className="text-foreground leading-relaxed whitespace-pre-wrap">
-                {story.description}
+                {linkifyText(story.description)}
               </p>
             </div>
           )}

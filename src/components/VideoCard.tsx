@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Story } from '@/types/story';
 import { useWatchHistory } from '@/hooks/useWatchHistory';
 import { Button } from '@/components/ui/button';
+import { linkifyText } from '@/lib/utils';
 
 interface VideoCardProps {
   story: Story;
@@ -86,7 +87,7 @@ const VideoCard = ({ story, onClick }: VideoCardProps) => {
           <div className="space-y-3">
             {story.description && (
               <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                {story.description}
+                {linkifyText(story.description)}
               </p>
             )}
             

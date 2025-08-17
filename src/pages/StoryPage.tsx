@@ -7,6 +7,7 @@ import { useStoryBySlug } from '@/hooks/useStories';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import SEOMetaTags from '@/components/SEOMetaTags';
+import { linkifyText } from '@/lib/utils';
 
 export default function StoryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -185,7 +186,7 @@ export default function StoryPage() {
                 <h2 className="text-xl font-semibold mb-4">About this story</h2>
                 <div className="prose prose-sm max-w-none">
                   <p className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
-                    {story.description}
+                    {linkifyText(story.description)}
                   </p>
                 </div>
               </CardContent>
