@@ -19,6 +19,10 @@ Sixty-six commits in. It degrades gracefully, and nothing sensitive lives in the
 
 Stack: Vite, React, TypeScript, Tailwind, shadcn/ui, Supabase, TanStack Query, React Router.
 
+## License
+
+AGPL-3.0, see [LICENSE](LICENSE). You're free to use, study, and modify it, including commercially; if you run a modified version as a network service, you must release your source under the same terms.
+
 ---
 
 Part of [horizonfall.com](https://horizonfall.com). The full story is at **[horizonfall.com/projects/stories-for-aashi](https://horizonfall.com/projects/stories-for-aashi)**.
